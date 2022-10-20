@@ -73,7 +73,7 @@ public class Req {
     }
 
     private static String parseParam(String content) {
-        String param = null;
+        String param = "";
         Optional<String> contentLengthLine = content.lines().filter(s -> s.startsWith("Content-Length: ")).findFirst();
         if (contentLengthLine.isPresent()) {
             int contentLengthInt = Integer.parseInt(contentLengthLine.get()
