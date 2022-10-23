@@ -16,11 +16,13 @@ public class Req {
     }
 
     public static Req of(String content) {
+        String poohMode = parsePoohMode(content);
+        String httpRequestType = parseHttpRequestType(content);
         return new Req(
-                parseHttpRequestType(content),
-                parsePoohMode(content),
+                httpRequestType,
+                poohMode,
                 parseSourceName(content),
-                parseParam(content)
+                parseParam(httpRequestType, poohMode, content)
         );
     }
 
@@ -69,16 +71,23 @@ public class Req {
     private static String parseSourceName(String content) {
         String subs = content.substring(0, content.indexOf(System.lineSeparator()));
         subs = subs.substring(subs.indexOf(" "), subs.lastIndexOf(" "));
-        return subs.split("/", 3)[2];
+        return subs.split("/", 4)[2];
     }
 
-    private static String parseParam(String content) {
+    private static String parseParam(String httpRequestType, String poohMode, String content) {
         String param = "";
-        Optional<String> contentLengthLine = content.lines().filter(s -> s.startsWith("Content-Length: ")).findFirst();
-        if (contentLengthLine.isPresent()) {
-            int contentLengthInt = Integer.parseInt(contentLengthLine.get()
-                    .substring(contentLengthLine.get().lastIndexOf(": ") + 2));
-            param = content.substring(content.length() - contentLengthInt - System.lineSeparator().length()).trim();
+        if (httpRequestType.equals("GET") && poohMode.equals("topic")) {
+            String subs = content.substring(0, content.indexOf(System.lineSeparator()));
+            subs = subs.substring(subs.indexOf(" "), subs.lastIndexOf(" "));
+            param = subs.split("/", 5)[3];
+        }
+        if (httpRequestType.equals("POST")) {
+            Optional<String> contentLengthLine = content.lines().filter(s -> s.startsWith("Content-Length: ")).findFirst();
+            if (contentLengthLine.isPresent()) {
+                int contentLengthInt = Integer.parseInt(contentLengthLine.get()
+                        .substring(contentLengthLine.get().lastIndexOf(": ") + 2));
+                param = content.substring(content.length() - contentLengthInt - System.lineSeparator().length()).trim();
+            }
         }
         return param;
     }
