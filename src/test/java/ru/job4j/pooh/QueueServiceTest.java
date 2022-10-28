@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class QueueServiceTest {
-
+    /**
+     * Проверка очереди на получение значения.
+     */
     @Test
     void whenPostThenGetQueue() {
         QueueService queueService = new QueueService();
@@ -15,6 +17,9 @@ class QueueServiceTest {
         assertThat(result.getText()).isEqualTo("temperature=18");
     }
 
+    /**
+     * Проверка статуса получения значения.
+     */
     @Test
     void whenPostThenGetStatus200() {
         QueueService queueService = new QueueService();
@@ -24,6 +29,9 @@ class QueueServiceTest {
         assertThat(result.getStatus()).isEqualTo("200");
     }
 
+    /**
+     * Получение значения из пустой очереди, проверка статуса и значения.
+     */
     @Test
     void whenNoHaveDataThenStatus204() {
         QueueService queueService = new QueueService();
