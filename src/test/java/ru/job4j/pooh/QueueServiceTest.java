@@ -42,4 +42,28 @@ class QueueServiceTest {
         assertThat(result.getText()).isEmpty();
         assertThat(result.getStatus()).isEqualTo("204");
     }
+
+    /**
+     * Создаем две очереди и одну опустошаем, и проверяем другую.
+     */
+    @Test
+    void whenCreateTwoQueueAndGetMoreMsgFromFirstThenFirstEmptyAndSecondHaveAnswer() {
+        QueueService queueService = new QueueService();
+        String paramForPostInQueue1 = "temperature=18";
+        String paramForPostInQueue2 = "boiler=50";
+        queueService.process(new Req("POST", "queue", "weather", paramForPostInQueue1));
+        queueService.process(new Req("POST", "queue", "house", paramForPostInQueue2));
+        Resp result1 = queueService.process(new Req("GET", "queue", "weather", null));
+        Resp result2 = queueService.process(new Req("GET", "queue", "weather", null));
+        Resp result3 = queueService.process(new Req("GET", "queue", "house", null));
+        Resp result4 = queueService.process(new Req("GET", "queue", "house", null));
+        assertThat(result1.getText()).isEqualTo("temperature=18");
+        assertThat(result1.getStatus()).isEqualTo("200");
+        assertThat(result2.getText()).isEmpty();
+        assertThat(result2.getStatus()).isEqualTo("204");
+        assertThat(result3.getText()).isEqualTo("boiler=50");
+        assertThat(result3.getStatus()).isEqualTo("200");
+        assertThat(result4.getText()).isEmpty();
+        assertThat(result4.getStatus()).isEqualTo("204");
+    }
 }
