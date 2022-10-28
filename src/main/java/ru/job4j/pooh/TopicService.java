@@ -34,9 +34,7 @@ public class TopicService implements Service {
 
     private Resp processPost(Req req) {
         topics.computeIfPresent(req.getSourceName(), (topic, subs) -> {
-            subs.forEach((sub, queue) -> {
-                queue.add(req.getParam());
-            });
+            subs.forEach((sub, queue) -> queue.add(req.getParam()));
             return subs;
         });
         return new Resp("", "200");
