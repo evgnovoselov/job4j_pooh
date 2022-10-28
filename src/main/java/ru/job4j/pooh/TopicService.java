@@ -33,10 +33,8 @@ public class TopicService implements Service {
     }
 
     private Resp processPost(Req req) {
-        topics.computeIfPresent(req.getSourceName(), (topic, subs) -> {
-            subs.forEach((sub, queue) -> queue.add(req.getParam()));
-            return subs;
-        });
+        ConcurrentMap<String, ConcurrentLinkedQueue<String>> subs = topics.getOrDefault(req.getSourceName(), new ConcurrentHashMap<>());
+        subs.forEach((sub, queue) -> queue.add(req.getParam()));
         return new Resp("", "200");
     }
 }
