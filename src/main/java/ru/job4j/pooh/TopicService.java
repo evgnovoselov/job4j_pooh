@@ -1,6 +1,5 @@
 package ru.job4j.pooh;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -20,6 +19,12 @@ public class TopicService implements Service {
         return resp;
     }
 
+    /**
+     * Каждый пользователь получает сообщение из своей очереди, или если сообщения нет, то статус 204.
+     *
+     * @param req Запрос.
+     * @return Ответ.
+     */
     private Resp processGet(Req req) {
         topics.putIfAbsent(req.getSourceName(), new ConcurrentHashMap<>());
         topics.get(req.getSourceName()).putIfAbsent(req.getParam(), new ConcurrentLinkedQueue<>());
@@ -32,6 +37,12 @@ public class TopicService implements Service {
         return new Resp(valueTopic, status);
     }
 
+    /**
+     * Добавляется сообщение всем подписанным получателям у топика.
+     *
+     * @param req Запрос.
+     * @return Ответ.
+     */
     private Resp processPost(Req req) {
         ConcurrentMap<String, ConcurrentLinkedQueue<String>> subs = topics.getOrDefault(req.getSourceName(), new ConcurrentHashMap<>());
         subs.forEach((sub, queue) -> queue.add(req.getParam()));

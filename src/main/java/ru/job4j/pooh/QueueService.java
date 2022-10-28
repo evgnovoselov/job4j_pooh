@@ -19,6 +19,12 @@ public class QueueService implements Service {
         return resp;
     }
 
+    /**
+     * Получаем ответ с сообщением из нужной очереди, если сообщения или очереди нет возвращаем статус ответа 204.
+     *
+     * @param req Запрос.
+     * @return Ответ.
+     */
     private Resp processGet(Req req) {
         String valueQueue = queue.getOrDefault(req.getSourceName(), new ConcurrentLinkedQueue<>()).poll();
         String status = "200";
@@ -29,6 +35,12 @@ public class QueueService implements Service {
         return new Resp(valueQueue, status);
     }
 
+    /**
+     * Если есть очередь, то добавляем в неё сообщение, если нет, то создаем очередь и добавляем.
+     *
+     * @param req Запрос.
+     * @return Ответ.
+     */
     private Resp processPost(Req req) {
         queue.putIfAbsent(req.getSourceName(), new ConcurrentLinkedQueue<>());
         queue.get(req.getSourceName()).add(req.getParam());
