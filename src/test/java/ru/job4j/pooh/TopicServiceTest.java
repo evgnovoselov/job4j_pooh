@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TopicServiceTest {
-
     @Test
     void whenTopic() {
         TopicService topicService = new TopicService();
@@ -22,6 +21,6 @@ class TopicServiceTest {
                 new Req("GET", "topic", "weather", paramForPublisher2)
         );
         Assertions.assertThat(result1.getText()).isEqualTo("temperature=18");
-        Assertions.assertThat(result1.getText()).isEmpty();
+        Assertions.assertThat(result2.getText()).isEmpty();
     }
 }
