@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TopicServiceTest {
+public class TopicServiceTest {
     /**
      * Проверяем работу топика с 2мя клиентами, один подписан на сообщения, другой нет.
      */
     @Test
-    void whenHaveTwoClientsAndOneSubThenGivenContentOnlyOneSub() {
+    public void whenHaveTwoClientsAndOneSubThenGivenContentOnlyOneSub() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";
@@ -32,7 +32,7 @@ class TopicServiceTest {
      * Проверяем, что сообщение доходят всем пользователям подписанным на топик.
      */
     @Test
-    void whenTopicTwoPublishersThenHaveTwoAnswer() {
+    public void whenTopicTwoPublishersThenHaveTwoAnswer() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";
@@ -62,7 +62,7 @@ class TopicServiceTest {
      * Проверяем, что сообщение удалилось у пользователя, а у другого осталось
      */
     @Test
-    void whenGiveMoreMsgFromUserThenGivenEmptyResponse() {
+    public void whenGiveMoreMsgFromUserThenGivenEmptyResponse() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";

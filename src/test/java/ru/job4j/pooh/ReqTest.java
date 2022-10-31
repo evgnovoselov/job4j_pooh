@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ReqTest {
+public class ReqTest {
     @Test
-    void whenQueueModePostMethod() {
+    public void whenQueueModePostMethod() {
         String ls = System.lineSeparator();
         String content = "POST /queue/weather HTTP/1.1" + ls
                 + "Host: localhost:9000" + ls
@@ -24,7 +24,7 @@ class ReqTest {
     }
 
     @Test
-    void whenQueueModeGetMethod() {
+    public void whenQueueModeGetMethod() {
         String ls = System.lineSeparator();
         String content = "GET /queue/weather HTTP/1.1" + ls
                 + "Host: localhost:9000" + ls
@@ -38,7 +38,7 @@ class ReqTest {
     }
 
     @Test
-    void whenTopicModePostMethod() {
+    public void whenTopicModePostMethod() {
         String ls = System.lineSeparator();
         String content = "POST /topic/weather HTTP/1.1" + ls
                 + "Host: localhost:9000" + ls
@@ -56,7 +56,7 @@ class ReqTest {
     }
 
     @Test
-    void whenTopicModeGetMethod() {
+    public void whenTopicModeGetMethod() {
         String ls = System.lineSeparator();
         String content = "GET /topic/weather/client407 HTTP/1.1" + ls
                 + "Host: localhost:9000" + ls

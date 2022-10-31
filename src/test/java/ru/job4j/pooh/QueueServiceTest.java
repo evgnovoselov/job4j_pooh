@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class QueueServiceTest {
+public class QueueServiceTest {
     /**
      * Проверка очереди на получение значения.
      */
     @Test
-    void whenPostThenGetQueue() {
+    public void whenPostThenGetQueue() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -21,7 +21,7 @@ class QueueServiceTest {
      * Проверка статуса получения значения.
      */
     @Test
-    void whenPostThenGetStatus200() {
+    public void whenPostThenGetStatus200() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -33,7 +33,7 @@ class QueueServiceTest {
      * Получение значения из пустой очереди, проверка статуса и значения.
      */
     @Test
-    void whenNoHaveDataThenStatus204() {
+    public void whenNoHaveDataThenStatus204() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -47,7 +47,7 @@ class QueueServiceTest {
      * Создаем две очереди и одну опустошаем, и проверяем другую.
      */
     @Test
-    void whenCreateTwoQueueAndGetMoreMsgFromFirstThenFirstEmptyAndSecondHaveAnswer() {
+    public void whenCreateTwoQueueAndGetMoreMsgFromFirstThenFirstEmptyAndSecondHaveAnswer() {
         QueueService queueService = new QueueService();
         String paramForPostInQueue1 = "temperature=18";
         String paramForPostInQueue2 = "boiler=50";
