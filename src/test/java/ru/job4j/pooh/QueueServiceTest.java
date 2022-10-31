@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class QueueServiceTest {
+public class QueueServiceTest {
     /**
      * Проверка очереди на получение значения.
      */
     @Test
-    void whenPostThenGetQueue() {
+    public void whenPostThenGetQueue() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -21,7 +21,7 @@ class QueueServiceTest {
      * Проверка статуса получения значения.
      */
     @Test
-    void whenPostThenGetStatus200() {
+    public void whenPostThenGetStatus200() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -33,7 +33,7 @@ class QueueServiceTest {
      * Получение значения из пустой очереди, проверка статуса и значения.
      */
     @Test
-    void whenNoHaveDataThenStatus204() {
+    public void whenNoHaveDataThenStatus204() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
         queueService.process(new Req("POST", "queue", "weather", paramForPostMethod));
@@ -47,7 +47,7 @@ class QueueServiceTest {
      * Создаем две очереди и одну опустошаем, и проверяем другую.
      */
     @Test
-    void whenCreateTwoQueueAndGetMoreMsgFromFirstThenFirstEmptyAndSecondHaveAnswer() {
+    public void whenCreateTwoQueueAndGetMoreMsgFromFirstThenFirstEmptyAndSecondHaveAnswer() {
         QueueService queueService = new QueueService();
         String paramForPostInQueue1 = "temperature=18";
         String paramForPostInQueue2 = "boiler=50";
@@ -65,5 +65,27 @@ class QueueServiceTest {
         assertThat(result3.getStatus()).isEqualTo("200");
         assertThat(result4.getText()).isEmpty();
         assertThat(result4.getStatus()).isEqualTo("204");
+    }
+
+    /**
+     * Когда неверный тип запроса, получаем ответ со статусом 501.
+     */
+    @Test
+    public void whenBadRequestTypeThenRespStatus501() {
+        QueueService queueService = new QueueService();
+        Resp result = queueService.process(new Req("TTT", "queue", "weather", null));
+        assertThat(result.getText()).isEmpty();
+        assertThat(result.getStatus()).isEqualTo("501");
+    }
+
+    /**
+     * Смотрим какой ответ мы получили при добавлении значения.
+     */
+    @Test
+    public void whenSendReqThenGetResp() {
+        QueueService queueService = new QueueService();
+        Resp result = queueService.process(new Req("POST", "queue", "weather", "temperature=18"));
+        assertThat(result.getText()).isEqualTo("temperature=18");
+        assertThat(result.getStatus()).isEqualTo("200");
     }
 }

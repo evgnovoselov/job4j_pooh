@@ -12,11 +12,10 @@ public class TopicService implements Service {
         Resp resp = null;
         if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
-        }
-        if ("POST".equals(req.getHttpRequestType())) {
+        } else if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
         }
-        return resp;
+        return resp != null ? resp : new Resp("", "501");
     }
 
     /**
@@ -46,6 +45,6 @@ public class TopicService implements Service {
     private Resp processPost(Req req) {
         ConcurrentMap<String, ConcurrentLinkedQueue<String>> subs = topics.getOrDefault(req.getSourceName(), new ConcurrentHashMap<>());
         subs.forEach((sub, queue) -> queue.add(req.getParam()));
-        return new Resp("", "200");
+        return new Resp(req.getParam(), "200");
     }
 }

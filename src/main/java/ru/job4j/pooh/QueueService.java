@@ -12,11 +12,10 @@ public class QueueService implements Service {
         Resp resp = null;
         if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
-        }
-        if ("GET".equals(req.getHttpRequestType())) {
+        } else if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
         }
-        return resp;
+        return resp != null ? resp : new Resp("", "501");
     }
 
     /**
@@ -44,6 +43,6 @@ public class QueueService implements Service {
     private Resp processPost(Req req) {
         queue.putIfAbsent(req.getSourceName(), new ConcurrentLinkedQueue<>());
         queue.get(req.getSourceName()).add(req.getParam());
-        return new Resp("", "200");
+        return new Resp(req.getParam(), "200");
     }
 }

@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TopicServiceTest {
+public class TopicServiceTest {
     /**
      * Проверяем работу топика с 2мя клиентами, один подписан на сообщения, другой нет.
      */
     @Test
-    void whenHaveTwoClientsAndOneSubThenGivenContentOnlyOneSub() {
+    public void whenHaveTwoClientsAndOneSubThenGivenContentOnlyOneSub() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";
@@ -32,7 +32,7 @@ class TopicServiceTest {
      * Проверяем, что сообщение доходят всем пользователям подписанным на топик.
      */
     @Test
-    void whenTopicTwoPublishersThenHaveTwoAnswer() {
+    public void whenTopicTwoPublishersThenHaveTwoAnswer() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";
@@ -62,7 +62,7 @@ class TopicServiceTest {
      * Проверяем, что сообщение удалилось у пользователя, а у другого осталось
      */
     @Test
-    void whenGiveMoreMsgFromUserThenGivenEmptyResponse() {
+    public void whenGiveMoreMsgFromUserThenGivenEmptyResponse() {
         TopicService topicService = new TopicService();
         String paramForPublisher = "temperature=18";
         String paramForSubscriber1 = "client407";
@@ -85,5 +85,27 @@ class TopicServiceTest {
         assertThat(result2.getStatus()).isEqualTo("200");
         assertThat(result3.getText()).isEmpty();
         assertThat(result3.getStatus()).isEqualTo("204");
+    }
+
+    /**
+     * Когда неверный тип запроса, получаем ответ со статусом 501.
+     */
+    @Test
+    public void whenBadRequestTypeThenRespStatus501() {
+        TopicService topicService = new TopicService();
+        Resp result = topicService.process(new Req("TTT", "topic", "weather", "cl"));
+        assertThat(result.getText()).isEmpty();
+        assertThat(result.getStatus()).isEqualTo("501");
+    }
+
+    /**
+     * Смотрим какой ответ мы получили при добавлении значения.
+     */
+    @Test
+    public void whenSendReqThenGetResp() {
+        TopicService topicService = new TopicService();
+        Resp result = topicService.process(new Req("POST", "topic", "weather", "temperature=18"));
+        assertThat(result.getText()).isEqualTo("temperature=18");
+        assertThat(result.getStatus()).isEqualTo("200");
     }
 }
