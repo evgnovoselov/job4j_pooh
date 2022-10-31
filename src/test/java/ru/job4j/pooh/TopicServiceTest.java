@@ -86,4 +86,15 @@ public class TopicServiceTest {
         assertThat(result3.getText()).isEmpty();
         assertThat(result3.getStatus()).isEqualTo("204");
     }
+
+    /**
+     * Когда неверный тип запроса, получаем ответ со статусом 501.
+     */
+    @Test
+    public void whenBadRequestTypeThenRespStatus501() {
+        TopicService topicService = new TopicService();
+        Resp result = topicService.process(new Req("TTT", "topic", "weather", "cl"));
+        assertThat(result.getText()).isEmpty();
+        assertThat(result.getStatus()).isEqualTo("501");
+    }
 }

@@ -66,4 +66,15 @@ public class QueueServiceTest {
         assertThat(result4.getText()).isEmpty();
         assertThat(result4.getStatus()).isEqualTo("204");
     }
+
+    /**
+     * Когда неверный тип запроса, получаем ответ со статусом 501.
+     */
+    @Test
+    public void whenBadRequestTypeThenRespStatus501() {
+        QueueService queueService = new QueueService();
+        Resp result = queueService.process(new Req("TTT", "queue", "weather", null));
+        assertThat(result.getText()).isEmpty();
+        assertThat(result.getStatus()).isEqualTo("501");
+    }
 }
