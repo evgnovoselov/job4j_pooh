@@ -97,4 +97,15 @@ public class TopicServiceTest {
         assertThat(result.getText()).isEmpty();
         assertThat(result.getStatus()).isEqualTo("501");
     }
+
+    /**
+     * Смотрим какой ответ мы получили при добавлении значения.
+     */
+    @Test
+    public void whenSendReqThenGetResp() {
+        TopicService topicService = new TopicService();
+        Resp result = topicService.process(new Req("POST", "topic", "weather", "temperature=18"));
+        assertThat(result.getText()).isEqualTo("temperature=18");
+        assertThat(result.getStatus()).isEqualTo("200");
+    }
 }

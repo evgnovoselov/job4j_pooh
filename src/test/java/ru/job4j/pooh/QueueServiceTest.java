@@ -77,4 +77,15 @@ public class QueueServiceTest {
         assertThat(result.getText()).isEmpty();
         assertThat(result.getStatus()).isEqualTo("501");
     }
+
+    /**
+     * Смотрим какой ответ мы получили при добавлении значения.
+     */
+    @Test
+    public void whenSendReqThenGetResp() {
+        QueueService queueService = new QueueService();
+        Resp result = queueService.process(new Req("POST", "queue", "weather", "temperature=18"));
+        assertThat(result.getText()).isEqualTo("temperature=18");
+        assertThat(result.getStatus()).isEqualTo("200");
+    }
 }

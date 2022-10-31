@@ -43,6 +43,6 @@ public class QueueService implements Service {
     private Resp processPost(Req req) {
         queue.putIfAbsent(req.getSourceName(), new ConcurrentLinkedQueue<>());
         queue.get(req.getSourceName()).add(req.getParam());
-        return new Resp("", "200");
+        return new Resp(req.getParam(), "200");
     }
 }
