@@ -12,8 +12,7 @@ public class TopicService implements Service {
         Resp resp = null;
         if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
-        }
-        if ("POST".equals(req.getHttpRequestType())) {
+        } else if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
         }
         return resp != null ? resp : new Resp("", "501");

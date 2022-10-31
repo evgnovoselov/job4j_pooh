@@ -12,8 +12,7 @@ public class QueueService implements Service {
         Resp resp = null;
         if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
-        }
-        if ("GET".equals(req.getHttpRequestType())) {
+        } else if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
         }
         return resp != null ? resp : new Resp("", "501");
