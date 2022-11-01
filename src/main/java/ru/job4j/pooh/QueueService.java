@@ -9,13 +9,13 @@ public class QueueService implements Service {
 
     @Override
     public Resp process(Req req) {
-        Resp resp = null;
+        Resp resp = new Resp("", "501");
         if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
         } else if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
         }
-        return resp != null ? resp : new Resp("", "501");
+        return resp;
     }
 
     /**

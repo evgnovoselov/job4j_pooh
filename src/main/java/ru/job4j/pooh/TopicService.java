@@ -9,13 +9,13 @@ public class TopicService implements Service {
 
     @Override
     public Resp process(Req req) {
-        Resp resp = null;
+        Resp resp = new Resp("", "501");
         if ("GET".equals(req.getHttpRequestType())) {
             resp = processGet(req);
         } else if ("POST".equals(req.getHttpRequestType())) {
             resp = processPost(req);
         }
-        return resp != null ? resp : new Resp("", "501");
+        return resp;
     }
 
     /**
